@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'screens/home_screen.dart';
+import 'screens/admin_dashboard.dart';
 
 void main() {
   runApp(const VaccineApp());
@@ -11,7 +11,7 @@ class VaccineApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Vaccine Management System',
+      title: 'Admin Management System',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -44,7 +44,7 @@ class VaccineApp extends StatelessWidget {
           ),
         ),
       ),
-      home: const HomeScreen(),
+      home: const AdminDashboard(),
     );
   }
 }

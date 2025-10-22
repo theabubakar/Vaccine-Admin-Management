@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/vaccine.dart';
 import '../models/dose.dart';
+import '../models/brand.dart';
+import '../models/doctor.dart';
 
 class ApiService {
   // For web browser, use localhost
@@ -222,6 +224,199 @@ class ApiService {
       }
     } catch (e) {
       throw Exception('Error deleting dose: $e');
+    }
+  }
+
+  // Doctor API Methods
+  static Future<List<Doctor>> getDoctors() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/doctors'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          List<dynamic> doctorsJson = data['data'];
+          return doctorsJson.map((json) => Doctor.fromJson(json)).toList();
+        }
+      }
+      throw Exception('Failed to load doctors');
+    } catch (e) {
+      throw Exception('Error fetching doctors: $e');
+    }
+  }
+
+  static Future<Doctor> getDoctorById(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/doctors/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return Doctor.fromJson(data['data']);
+        }
+      }
+      throw Exception('Failed to load doctor');
+    } catch (e) {
+      throw Exception('Error fetching doctor: $e');
+    }
+  }
+
+  static Future<Map<String, dynamic>> createDoctor(Doctor doctor) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/doctors'),
+        headers: _headers,
+        body: json.encode(doctor.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return {
+            'doctor': Doctor.fromJson(data['data']),
+            'generatedPassword': data['generatedPassword']
+          };
+        }
+      }
+      throw Exception('Failed to create doctor');
+    } catch (e) {
+      throw Exception('Error creating doctor: $e');
+    }
+  }
+
+  static Future<Doctor> updateDoctor(String id, Doctor doctor) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/doctors/$id'),
+        headers: _headers,
+        body: json.encode(doctor.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return Doctor.fromJson(data['data']);
+        }
+      }
+      throw Exception('Failed to update doctor');
+    } catch (e) {
+      throw Exception('Error updating doctor: $e');
+    }
+  }
+
+  static Future<void> deleteDoctor(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl/doctors/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete doctor');
+      }
+    } catch (e) {
+      throw Exception('Error deleting doctor: $e');
+    }
+  }
+
+  // Brand API Methods
+  static Future<List<Brand>> getBrands() async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/brands'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          List<dynamic> brandsJson = data['data'];
+          return brandsJson.map((json) => Brand.fromJson(json)).toList();
+        }
+      }
+      throw Exception('Failed to load brands');
+    } catch (e) {
+      throw Exception('Error fetching brands: $e');
+    }
+  }
+
+  static Future<Brand> getBrandById(String id) async {
+    try {
+      final response = await http.get(
+        Uri.parse('$baseUrl/brands/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return Brand.fromJson(data['data']);
+        }
+      }
+      throw Exception('Failed to load brand');
+    } catch (e) {
+      throw Exception('Error fetching brand: $e');
+    }
+  }
+
+  static Future<Brand> createBrand(Brand brand) async {
+    try {
+      final response = await http.post(
+        Uri.parse('$baseUrl/brands'),
+        headers: _headers,
+        body: json.encode(brand.toJson()),
+      );
+
+      if (response.statusCode == 201) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return Brand.fromJson(data['data']);
+        }
+      }
+      throw Exception('Failed to create brand');
+    } catch (e) {
+      throw Exception('Error creating brand: $e');
+    }
+  }
+
+  static Future<Brand> updateBrand(String id, Brand brand) async {
+    try {
+      final response = await http.put(
+        Uri.parse('$baseUrl/brands/$id'),
+        headers: _headers,
+        body: json.encode(brand.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        if (data['success'] == true) {
+          return Brand.fromJson(data['data']);
+        }
+      }
+      throw Exception('Failed to update brand');
+    } catch (e) {
+      throw Exception('Error updating brand: $e');
+    }
+  }
+
+  static Future<void> deleteBrand(String id) async {
+    try {
+      final response = await http.delete(
+        Uri.parse('$baseUrl/brands/$id'),
+        headers: _headers,
+      );
+
+      if (response.statusCode != 200) {
+        throw Exception('Failed to delete brand');
+      }
+    } catch (e) {
+      throw Exception('Error deleting brand: $e');
     }
   }
 
